@@ -77,7 +77,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="readme.md" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -107,7 +106,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="license.txt" />
     <Content Include="lsip.txt" />
     <Content Include="torrent.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
