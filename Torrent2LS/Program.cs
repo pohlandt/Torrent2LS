@@ -12,6 +12,7 @@ namespace Torrent2LS
         private static NotifyIcon _notifyIcon = new NotifyIcon(new ControlContainer());
         private static ApplicationContext _context = new ApplicationContext();
         private static string[] _args;
+        private static volatile string _ip;
         private const int NOTIFY_DURATION = 5000;
 
         /// <summary>
@@ -27,6 +28,7 @@ namespace Torrent2LS
             _notifyIcon.Text = "Torrent2LS";
             _notifyIcon.Visible = true;
             _notifyIcon.Icon = new System.Drawing.Icon(Application.StartupPath + @"\torrent.ico");
+            _notifyIcon.BalloonTipClicked += new EventHandler(_notifyIcon_BalloonTipClicked);
 
             _args = args;
             
@@ -38,6 +40,11 @@ namespace Torrent2LS
 
             Application.Run(_context);
             Log("## Torrent2LS end ##");
+        }
+
+        static void _notifyIcon_BalloonTipClicked(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(GetDefaultBrowser(), "http://" + _ip + ":8080/");
         }
 
         static void Run()
@@ -68,17 +75,16 @@ namespace Torrent2LS
 
             try
             {
-                string ip = null;
-                if (_args.Length == 2) ip = _args[1];
+                if (_args.Length == 2) _ip = _args[1];
                 else
                 {
                     using(StreamReader reader = new StreamReader(configPath, System.Text.Encoding.Unicode))
-                        ip = reader.ReadToEnd();
+                        _ip = reader.ReadToEnd();
                 }
 
-                Log("got ip: " + ip);
+                Log("got ip: " + _ip);
 
-                lsIp = IPAddress.Parse(ip);
+                lsIp = IPAddress.Parse(_ip);
             }
             catch (Exception ex)
             {
@@ -183,5 +189,13 @@ namespace Torrent2LS
 
             return 0;
         }
+
+        private static string GetDefaultBrowser()
+        {
+            Microsoft.Win32.RegistryKey registryKey = 
+                Microsoft.Win32.Registry.ClassesRoot.OpenSubKey(@"htmlfile\shell\open\command", false);
+            return ((string)registryKey.GetValue(null, "iexplore.exe")).Split('"')[1];
+        }
+
     }
-}
+ }
