@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.Windows.Forms;
 using System.Net;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace Torrent2LS
 {
@@ -193,7 +193,7 @@ namespace Torrent2LS
         private static string GetDefaultBrowser()
         {
             Microsoft.Win32.RegistryKey registryKey = 
-                Microsoft.Win32.Registry.ClassesRoot.OpenSubKey(@"htmlfile\shell\open\command", false);
+                Microsoft.Win32.Registry.ClassesRoot.OpenSubKey(@"http\shell\open\command", false);
             return ((string)registryKey.GetValue(null, "iexplore.exe")).Split('"')[1];
         }
 
